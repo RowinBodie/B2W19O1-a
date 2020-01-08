@@ -47,6 +47,7 @@ var words = [
 	"bazin",
 	"baren",
 	"beden",
+	"bitch",
 	"beken",
 	"bezem",
 	"baard",
@@ -348,6 +349,7 @@ var words = [
 	"stook",
 	"steek",
 	"schep",
+	"sexen",
 	"spijs",
 	"stoep",
 	"shirt",
@@ -482,11 +484,13 @@ var words = [
 var word;
 var number;
 var split;
+var row;
+var block;
 var answer;
 var counter = 1;
 var count = 1;
-var count2 = 1;
 var pressed = 0;
+var blox = [];
 function refresh(){//het veld maken waar alles ik komt testaan
 	var base = document.createElement("div");
 	base.id = "base";
@@ -494,57 +498,68 @@ function refresh(){//het veld maken waar alles ik komt testaan
 	for(i=0; i<5; i++){
 		var transform = i.toString();
 		var name = "row"+transform;
-		var row = document.createElement("div");
+		row = document.createElement("div");
 		row.id = name;
 		document.getElementById("base").appendChild(row);
+		var tempBloxxArray = [];
 		for(n=0; n<5; n++){
-			var block = document.createElement("div");
+			block = document.createElement("div");
 			block.className = "blockForm";
-			block.id = "block"+counter
+			tempBloxxArray.push(block);
 			document.getElementById(name).appendChild(block);
 			counter++
 		}
+		blox.push(tempBloxxArray);
 	}//einde van het veld
 }
+function restart(){
+	for(i=0;i<5;i++){
+		var remove = document.getElementById("row"+i)
+		remove.remove();
+		blox.shift();
+	}
+	pressed = -1;
+}
 function start(){ //de function waar het woord gekozen wordt
-	number = Math.floor(Math.random() * 481);
+	number = Math.floor(Math.random() * 482);
 	word = words[number];
 	if(word == word){
-		number = Math.floor(Math.random() * 481);
+		number = Math.floor(Math.random() * 482);
 		word = words[number];
 	}
 	split = word.split("",5);
-	var beginLetter = document.getElementById("block1");
+	var beginLetter = blox[0][0];;
 	beginLetter.innerHTML = split[0];
-	console.log(split)
+	console.log(split);
 }//einde van de function start
 function add(){// function waar de input wordt vergeleken met het woord
-	if(pressed !=5){
+	if(pressed <5){
 		var inputUser = document.getElementById("input").value;
 		var split2 = inputUser.split("",5);
 		for(i=0;i<5;i++){
-			for(n=0;n<5;n++){
-				if(split2[i]==split[n]){
-					var yellow = document.getElementById("block"+count2);
-					yellow.style.backgroundColor = "#ffff00";
-				}
-				count2++
-			}
-			if(split2[i]==split[i]){
-				var green = document.getElementById("block"+count);
-				green.style.backgroundColor = "green"
-				green.innerHTML = split2[i];
-			}
-			else if(split2[i]!=split[i]){
-				var white = document.getElementById("block"+count);
+			if(split2[i]!=split[i]){
+				var white = blox[pressed][i];
 				white.style.backgroundColor ="rgb(252, 238, 180)";
 				white.innerHTML = split2[i];
 			}
+			for(n=0;n<5;n++){
+				if(split2[i]==split[n]){
+					var yellow = blox[pressed][i];
+					console.log(yellow)
+					yellow.style.backgroundColor = "yellow";
+				}
+			}
+			if(split2[i]==split[i]){
+				var green = blox[pressed][i];
+				green.style.backgroundColor = "green"
+				green.innerHTML = split2[i];
+			}
 			count++
-		}	
+		}
 	}
-	else if(pressed == 5){
-		// restart();
+	document.getElementById('input').value = ""
+	if(pressed >= 5){
+		restart();
 		refresh();
 		start();
 	}
@@ -552,3 +567,4 @@ function add(){// function waar de input wordt vergeleken met het woord
 }//einde van de function add
 refresh();
 start();
+

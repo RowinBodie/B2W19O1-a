@@ -509,8 +509,7 @@ function refresh(){//het veld maken waar alles ik komt testaan
 			document.getElementById(name).appendChild(block);
 		}
 		blox.push(tempBloxxArray);
-	}//einde van het veld
-	console.log(blox);
+	}
 }
 function restart(){// de restart van de game functie
 	for(i=0;i<5;i++){
@@ -530,8 +529,7 @@ function start(){ //de function waar het woord gekozen wordt
 	split = word.split("",5);
 	var beginLetter = blox[0][0];;
 	beginLetter.innerHTML = split[0];
-	console.log(split);
-}//einde van de function start
+}
 function add(){// function waar de input wordt vergeleken met het woord
 	if(pressed <5){
 		split = word.split("",5);

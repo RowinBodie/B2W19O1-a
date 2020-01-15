@@ -487,8 +487,8 @@ var split;
 var row;
 var block;
 var answer;
-var counter = 1;
-var count = 1;
+var counter = 0;
+var count = 0;
 var pressed = 0;
 var blox = [];
 function refresh(){//het veld maken waar alles ik komt testaan
@@ -507,12 +507,12 @@ function refresh(){//het veld maken waar alles ik komt testaan
 			block.className = "blockForm";
 			tempBloxxArray.push(block);
 			document.getElementById(name).appendChild(block);
-			counter++
 		}
 		blox.push(tempBloxxArray);
 	}//einde van het veld
+	console.log(blox);
 }
-function restart(){
+function restart(){// de restart van de game functie
 	for(i=0;i<5;i++){
 		var remove = document.getElementById("row"+i)
 		remove.remove();
@@ -534,28 +534,45 @@ function start(){ //de function waar het woord gekozen wordt
 }//einde van de function start
 function add(){// function waar de input wordt vergeleken met het woord
 	if(pressed <5){
+		split = word.split("",5);
 		var inputUser = document.getElementById("input").value;
 		var split2 = inputUser.split("",5);
+		var tempSplit = [];
+		for (i = 0; i < split2.length; i++) {
+			tempSplit[i] = split2[i];
+		}
 		for(i=0;i<5;i++){
-			if(split2[i]!=split[i]){
-				var white = blox[pressed][i];
-				white.style.backgroundColor ="rgb(252, 238, 180)";
-				white.innerHTML = split2[i];
+			var letter = blox[counter][i];
+			letter.innerHTML = split2[i]
+			if(tempSplit[i] == split[i]){
+				tempSplit[i] = "green";
 			}
-			for(n=0;n<5;n++){
-				if(split2[i]==split[n]){
-					var yellow = blox[pressed][i];
-					console.log(yellow)
-					yellow.style.backgroundColor = "yellow";
+		}
+		for(i=0;i<5;i++){
+			if(tempSplit[i] != "green"){
+				for(n=0;n<5;n++){
+					if(tempSplit[i]==split[n]){
+						if(tempSplit[n]!="green"){
+							tempSplit[i]="yellow";
+						}
+					}
 				}
 			}
-			if(split2[i]==split[i]){
-				var green = blox[pressed][i];
-				green.style.backgroundColor = "green"
-				green.innerHTML = split2[i];
-			}
-			count++
 		}
+		counter++
+		for(i=0;i<5;i++){
+			if(tempSplit[i] == "green"){
+				var color = blox[count][i];
+				color.style.backgroundColor = "green"
+			}
+			if(tempSplit[i] != "green"){
+				if(tempSplit[i] == "yellow"){
+					var color = blox[count][i];
+					color.style.backgroundColor = "yellow"
+				}
+			}
+		}
+		count++
 	}
 	document.getElementById('input').value = ""
 	if(pressed >= 5){
@@ -567,4 +584,3 @@ function add(){// function waar de input wordt vergeleken met het woord
 }//einde van de function add
 refresh();
 start();
-

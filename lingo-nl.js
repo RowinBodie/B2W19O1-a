@@ -520,12 +520,13 @@ function restart(){// de restart van de game functie
 	pressed = -1;
 }
 function start(){ //de function waar het woord gekozen wordt
-	number = Math.floor(Math.random() * 482);
+	number = Math.floor(Math.random() * words.length);
 	word = words[number];
 	if(word == word){
-		number = Math.floor(Math.random() * 482);
+		number = Math.floor(Math.random() * words.length);
 		word = words[number];
 	}
+	console.log(word)
 	split = word.split("",5);
 	var beginLetter = blox[0][0];;
 	beginLetter.innerHTML = split[0];
@@ -536,6 +537,7 @@ function add(){// function waar de input wordt vergeleken met het woord
 		var inputUser = document.getElementById("input").value;
 		var split2 = inputUser.split("",5);
 		var tempSplit = [];
+		var holdSplit = [];
 		for (i = 0; i < split2.length; i++) {
 			tempSplit[i] = split2[i];
 		}
@@ -546,29 +548,35 @@ function add(){// function waar de input wordt vergeleken met het woord
 				tempSplit[i] = "green";
 			}
 		}
+		for (i = 0; i < split.length; i++) {
+			holdSplit[i] = split[i];
+		}
 		for(i=0;i<5;i++){
 			if(tempSplit[i] != "green"){
 				for(n=0;n<5;n++){
 					if(tempSplit[i]==split[n]){
-						if(tempSplit[n]!="green"){
+						if(tempSplit[n]!="green"&&holdSplit[n] != "checked"){
+							holdSplit[n] = "checked";
 							tempSplit[i]="yellow";
 						}
 					}
 				}
 			}
 		}
+		console.log(holdSplit);
 		counter++
 		for(i=0;i<5;i++){
 			if(tempSplit[i] == "green"){
 				var color = blox[count][i];
-				color.style.backgroundColor = "green"
+				color.style.backgroundColor = "green";
 			}
-			if(tempSplit[i] != "green"){
-				if(tempSplit[i] == "yellow"){
-					var color = blox[count][i];
-					color.style.backgroundColor = "yellow"
-				}
+			else if(tempSplit[i] == "yellow"){
+				var color = blox[count][i];
+				color.style.backgroundColor = "yellow";
 			}
+		}
+		if(tempSplit[0] == "green",tempSplit[1] == "green",tempSplit[2] == "green",tempSplit[3] == "green"){
+			setTimeout(function(){ victory() }, 2000);
 		}
 		count++
 	}
@@ -580,5 +588,12 @@ function add(){// function waar de input wordt vergeleken met het woord
 	}
 	pressed++
 }//einde van de function add
+function victory(){
+	alert("you won!");
+	alert("the word was "+word)
+	restart();
+	refresh();
+	start();
+}
 refresh();
 start();
